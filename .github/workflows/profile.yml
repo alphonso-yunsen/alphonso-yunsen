@@ -1,0 +1,43 @@
+name: Refresh starfield profile
+
+on:
+  schedule:
+    - cron: '23 0 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/**', 'profile-theme.json', '.github/workflows/profile.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: starfield-profile
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Render public profile cards
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/render_profile.py
+      - name: Render contribution snake
+        uses: Platane/snk/svg-only@d8f6715049803e982ee5ff501b6b9b7d5deeb09b # v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: generated/snake-raw.svg?color_snake=%2390D5E8&color_dots=%2320263F,%23514873,%237962A8,%23AC8DD7,%23D6B9F4
+      - name: Apply starfield frame
+        run: python3 scripts/render_profile.py --frame-snake
+      - name: Publish verified assets
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add generated/overview.svg generated/activity.svg generated/snake.svg generated/profile.json assets/terminal.svg
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore: refresh public profile artwork [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main

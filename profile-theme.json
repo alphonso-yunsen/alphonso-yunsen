@@ -1,0 +1,11 @@
+{
+  "user": "alphonso-yunsen",
+  "background": "#171D35",
+  "panel": "#272549",
+  "border": "#615C94",
+  "text": "#F0EEFF",
+  "muted": "#BBC1D8",
+  "lavender": "#B9A3FF",
+  "cyan": "#90D5E8",
+  "snake": ["#20263F", "#514873", "#7962A8", "#AC8DD7", "#D6B9F4"]
+}

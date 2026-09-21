@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.env
+.env.*
+preview/
+generated/snake-raw.svg
