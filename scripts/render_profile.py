@@ -47,14 +47,14 @@ def save(name, svg):
 
 def render_terminal():
     # Native SVG animation inspired by readme-typing-svg; no runtime service.
-    content = '<style>@keyframes type{0%,8%{width:0}55%,88%{width:640px}100%{width:0}}@keyframes blink{50%{opacity:0}}.reveal{animation:type 12s steps(38,end) infinite}.cursor{animation:blink 1s step-end infinite}@media(prefers-reduced-motion:reduce){.reveal{animation:none;width:640px}.cursor{animation:none}}</style>'
+    content = '<style>@keyframes type{0%,8%{width:0}55%,88%{width:350px}100%{width:0}}@keyframes travel{0%,8%{transform:translateX(-350px)}55%,88%{transform:translateX(0)}100%{transform:translateX(-350px)}}@keyframes blink{50%{opacity:0}}.reveal{animation:type 12s steps(21,end) infinite}.cursor{animation:blink 1s step-end infinite,travel 12s steps(21,end) infinite}@media(prefers-reduced-motion:reduce){.reveal{animation:none;width:350px}.cursor{animation:none}}</style>'
     content += '<defs><clipPath id="typing"><rect class="reveal" x="58" y="61" width="640" height="45"/></clipPath></defs>'
     for x, color in [(28,'lavender'),(45,'cyan'),(62,'muted')]:
         content += f'<circle cx="{x}" cy="25" r="4" fill="{THEME[color]}"/>'
     content += text(88,30,'alphonso / midnight workspace',12,'muted')
     content += text(28,91,'>',22,'cyan')
-    content += '<g clip-path="url(#typing)">' + text(58,91,'Create. Learn. Repeat.',27,'lavender', 'letter-spacing="2"') + '</g>'
-    content += text(407,91,'_',26,'cyan','class="cursor"')
+    content += '<g clip-path="url(#typing)">' + text(58,91,'Create. Learn. Repeat.',27,'lavender', 'textLength="350" lengthAdjust="spacingAndGlyphs"') + '</g>'
+    content += text(408,91,'_',26,'cyan','class="cursor"')
     content += text(28,126,'Somewhere between data and daydreams.',15,'muted')
     svg = card(760,152,'Create. Learn. Repeat. — animated terminal',content)
     ET.fromstring(svg)
